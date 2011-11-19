@@ -59,6 +59,22 @@ public class Sender
 		return 0;
 	}
 	
+	int SendTo(User UserTo,String msg)
+	{
+		JID jid=new JID(UserTo.getAddr());
+		if(xmpp.getPresence(jid).isAvailable())
+		{
+			Message message = new MessageBuilder()
+			.withRecipientJids(jid)
+			.withBody(msg)
+			.build();
+		  
+			xmpp.sendMessage(message);
+		}
+		  
+		return 0;
+	}
+	
 	int Invite(String Addr)
 	{
 		xmpp.sendInvitation(new JID(Addr));

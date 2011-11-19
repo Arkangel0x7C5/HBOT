@@ -28,19 +28,21 @@ public class Main extends HttpServlet
 	  {  
 		  Message msg = xmpp.parseMessage(req);
 		  User UserFrom=new User(msg.getFromJid());
+		  boolean InvitedUser=false;
 		  for(User u:mngUser.getUsers())
 		  {
-			  if(UserFrom.getAddr().compareTo(u.getAddr())==0)
+			  if(u.getAddr().compareTo(UserFrom.getAddr())==0)
 			  {
 				  UserFrom=u;
+				  InvitedUser=true;
 			  }
 		  }
+		  if(!InvitedUser) return;
 		  
-		  String body = msg.getBody();
-		  
-		  if(cmd.isCommand(msg.getBody()))
+		  String body=msg.getBody();
+		  if(cmd.isCommand(body))
 		  {
-			  cmd.run(UserFrom,msg.getBody());
+			  cmd.run(UserFrom,body);
 		  }
 		  else
 		  {

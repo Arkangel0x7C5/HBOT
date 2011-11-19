@@ -44,7 +44,7 @@ public class Commands
 		}
 		if(msg.startsWith("/online"))
 		{
-			Online();
+			Online(UserFrom);
 		}
 		if(msg.startsWith("/remove"))
 		{
@@ -84,7 +84,7 @@ public class Commands
 		return 0;
 	}
 	
-	int Online()
+	int Online(User UserFrom)
 	{
 		String lstUsuarios="";
 		
@@ -97,8 +97,8 @@ public class Commands
 			
 			lstUsuarios+="["+u.getNick()+"]"+"<"+u.getAddr()+">\n";
 		}
-		
-		sender.sendEverybody("[BOT]\n"+lstUsuarios);
+
+		sender.SendTo(UserFrom,"[BOT]\n"+lstUsuarios);
 		return 0;
 	}
 	
