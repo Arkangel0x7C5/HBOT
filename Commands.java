@@ -35,13 +35,12 @@ public class Commands
 	
 	int Invite(String msg)
 	{
-		sender.sendEverybody("[BOT] Voy a hacer una invitación...");
-		msg.replace("/invite ","");
-		sender.sendEverybody("[BOT] Ya casi estoy...");
+		msg=msg.substring(msg.indexOf(' '),msg.length());
 //		Pattern email = Pattern.compile("^\\S+@\\S+$");
 //		Matcher mt=email.matcher(msg);
-//		if(mt.matches())
+//		if(mt.find())
 //		{
+			sender.sendEverybody("[BOT] Voy a hacer una invitación a "+msg+".");
 			sender.Invite(msg);
 			sender.sendEverybody("[BOT] La hize :P");
 			//mngUser.addUser(new User(new JID(msg)));

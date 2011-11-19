@@ -5,7 +5,7 @@ import com.google.appengine.api.xmpp.JID;
 
 public class UserManager
 {
-	private List<User> lstUsers;
+	private ArrayList<User> lstUsers;
 	
 	public UserManager()
 	{
