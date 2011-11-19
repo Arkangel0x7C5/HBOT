@@ -59,7 +59,14 @@ public class Commands
 		}
 		if(msg.startsWith("/nick")) 
 		{
-			ChangeNick(UserFrom,msg.substring(msg.indexOf(' '),msg.length()).trim());
+			if(UserFrom.isMod())
+			{
+				ChangeNick(UserFrom,msg.substring(msg.indexOf(' '),msg.length()));
+			}
+			else
+			{
+				PrintNoAccess(UserFrom);
+			}
 		}
 		
 		return 0;
@@ -139,6 +146,7 @@ public class Commands
 	
 	int ChangeNick(User user,String nick)
 	{
+		nick=nick.trim().replace(" ","");
 		String oldNick=user.getNick();
 		user.setNick(nick);
 		sender.sendEverybody("[HBOT] "+oldNick+" es ahora conocido como "+user.getNick());
