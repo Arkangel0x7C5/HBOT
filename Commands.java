@@ -20,6 +20,7 @@ public class Commands
 		if(msg.startsWith("/invite")) return true;
 		if(msg.startsWith("/online")) return true;
 		if(msg.startsWith("/remove")) return true;
+		if(msg.startsWith("/nick")) return true;
 		
 		return false;
 	}
@@ -55,6 +56,10 @@ public class Commands
 			{
 				PrintNoAccess(UserFrom);
 			}
+		}
+		if(msg.startsWith("/nick")) 
+		{
+			ChangeNick(UserFrom,msg.substring(msg.indexOf(' '),msg.length()).trim());
 		}
 		
 		return 0;
@@ -129,6 +134,14 @@ public class Commands
 			}
 		}
 		
+		return 0;
+	}
+	
+	int ChangeNick(User user,String nick)
+	{
+		String oldNick=user.getNick();
+		user.setNick(nick);
+		sender.sendEverybody("[HBOT] "+oldNick+" es ahora conocido como "+user.getNick());
 		return 0;
 	}
 }
