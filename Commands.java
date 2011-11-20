@@ -9,6 +9,15 @@ public class Commands
 {
 	Sender sender;
 	UserManager mngUser;
+	String[] lstCommands={"salute",
+							"invite",
+							"online",
+							"remove",
+							"nick",
+							"source",
+							"setnick",
+							"save",
+							"load"};
 	public Commands(Sender sender,UserManager mngUser)
 	{
 		this.sender=sender;
@@ -16,89 +25,85 @@ public class Commands
 	}
 	boolean isCommand(String msg)
 	{		
-		if(msg.startsWith("/salute")) return true;
-		if(msg.startsWith("/invite")) return true;
-		if(msg.startsWith("/online")) return true;
-		if(msg.startsWith("/remove")) return true;
-		if(msg.startsWith("/nick")) return true;
-		if(msg.startsWith("/source")) return true;
-		if(msg.startsWith("/setnick")) return true;
-		if(msg.startsWith("/save")) return true;
-		if(msg.startsWith("/load")) return true;
+		int i;
+		for(i=0;i<lstCommands.length;i++)
+		{
+			if(msg.startsWith("/"+lstCommands[i]))
+			{
+				break;
+			}
+		}
 		
-		return false;
+		if(i==lstCommands.length) return false;
+		else return true;
 	}
 	
 	int run(User UserFrom,String msg) throws Exception
 	{
-		if(msg.startsWith("/salute"))
+		int i;
+		for(i=0;i<lstCommands.length;i++)
 		{
-			Salute();
-		}
-		if(msg.startsWith("/source"))
-		{
-			ShowSource(UserFrom);
-		}
-		if(msg.startsWith("/invite"))
-		{
-			if(UserFrom.isMod())
+			if(msg.startsWith("/"+lstCommands[i]))
 			{
-				Invite(msg.substring(msg.indexOf(' '),msg.length()));
-			}
-			else
-			{
-				PrintNoAccess(UserFrom);
-			}
-		}
-		if(msg.startsWith("/online"))
-		{
-			Online(UserFrom);
-		}
-		if(msg.startsWith("/remove"))
-		{
-			if(UserFrom.isMod())
-			{
-				Remove(msg.substring(msg.indexOf(' '),msg.length()));
-			}
-			else
-			{
-				PrintNoAccess(UserFrom);
-			}
-		}
-		if(msg.startsWith("/nick")) 
-		{
-			if(UserFrom.isMod())
-			{
-				ChangeNick(UserFrom,msg.substring(msg.indexOf(' '),msg.length()));
-			}
-			else
-			{
-				PrintNoAccess(UserFrom);
+				break;
 			}
 		}
 		
-		if(msg.startsWith("/save")) 
+		switch(i)
 		{
-			if(UserFrom.isMod())
-			{
-				Save();
-			}
-			else
-			{
-				PrintNoAccess(UserFrom);
-			}
-		}
-		
-		if(msg.startsWith("/load")) 
-		{
-			if(UserFrom.isMod())
-			{
-				Load();
-			}
-			else
-			{
-				PrintNoAccess(UserFrom);
-			}
+			case 0: //salute
+				Salute();
+			break;
+			
+			case 1: //invite
+				if(UserFrom.isMod())
+					Invite(msg.substring(msg.indexOf(' '),msg.length()));
+				else
+					PrintNoAccess(UserFrom);
+			break;
+			
+			case 2: //online
+				Online(UserFrom);
+			break;
+			
+			case 3: //remove
+				if(UserFrom.isMod())
+					Remove(msg.substring(msg.indexOf(' '),msg.length()));
+				else
+					PrintNoAccess(UserFrom);
+			break;
+			
+			case 4: //nick
+				if(UserFrom.isMod())
+					ChangeNick(UserFrom,msg.substring(msg.indexOf(' '),msg.length()));
+				else
+					PrintNoAccess(UserFrom);
+			break;
+			
+			case 5: //source
+				ShowSource(UserFrom);
+			break;
+			
+			case 6: //setnick
+				if(UserFrom.isMod())
+					SetNick(msg.substring(msg.indexOf(' '),msg.length()));
+				else
+					PrintNoAccess(UserFrom);
+			break;
+			
+			case 7: //save
+				if(UserFrom.isMod())
+					Save();
+				else
+					PrintNoAccess(UserFrom);
+			break;
+			
+			case 8: //load
+				if(UserFrom.isMod())
+					Load();
+				else
+					PrintNoAccess(UserFrom);
+			break;
 		}
 		
 		return 0;
@@ -118,7 +123,7 @@ public class Commands
 	
 	int PrintNoAccess(User user)
 	{
-		//TODO
+		sender.SendTo(user,"[BOT] No tienes permisos para hacer esta operación.");
 		return 0;
 	}
 	
@@ -205,6 +210,27 @@ public class Commands
 		DataManager DM=new DataManager(mngUser);
 		
 		DM.Load();
+		
+		return 0;
+	}
+	
+	int SetNick(String msg)
+	{
+		String[] args=msg.split(" ");
+		if(args.length<3) return -1;
+
+		for(User u:mngUser.getUsers())
+		{
+			if(u.getAddr().compareTo(args[1])==0 && (!u.isMod()))
+			{
+				String oldNick=u.getNick();
+				u.setNick(args[2]);
+				sender.sendEverybody("[BOT] "+oldNick+" es ahora conocido como "+u.getNick());
+				break;
+			}
+		}
+		
+		
 		
 		return 0;
 	}

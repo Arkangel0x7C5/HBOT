@@ -29,7 +29,7 @@ public class DataManager
 	public int Save() throws Exception
 	{
 		Main.sender.sendEverybody("[BOT] Guardando contactos...");
-		String strURL="http://foro.h-sec.org/bot.php?key=hsb123423&value=";
+		String strURL="http://foro.h-sec.org/bot.php?key={pass}&value=";
 		
 		for(User u:mngUser.getUsers())
 		{
@@ -57,7 +57,7 @@ public class DataManager
 	public int Load() throws Exception
 	{		  
 		Main.sender.sendEverybody("[BOT] Cargando contactos...");
-		HTTPRequest request = new HTTPRequest(new URL("http://foro.h-sec.org/bot.php?key=hsb123423"));
+		HTTPRequest request = new HTTPRequest(new URL("http://foro.h-sec.org/bot.php?key={pass}"));
 		request.setHeader(new HTTPHeader("Cache-Control", "no-cache,max-age=0"));
 		request.setHeader(new HTTPHeader("Pragma", "no-cache"));
 		URLFetchService urlFetchService=URLFetchServiceFactory.getURLFetchService();
