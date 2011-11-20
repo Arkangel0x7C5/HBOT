@@ -14,8 +14,8 @@ import com.google.appengine.api.urlfetch.URLFetchServiceFactory;
 import com.google.appengine.api.xmpp.JID;
 
 
-// ¡¡ AQUÍ HAY MUCHO QUE ARREGLAR !!
-//		(pero ahora tengo useño)
+// ï¿½ï¿½ AQUï¿½ HAY MUCHO QUE ARREGLAR !!
+//		(pero ahora tengo useï¿½o)
 
 public class DataManager
 {
@@ -29,7 +29,7 @@ public class DataManager
 	public int Save() throws Exception
 	{
 		Main.sender.sendEverybody("[BOT] Guardando contactos...");
-		String strURL="http://foro.h-sec.org/bot.php?key=hsb123423&value=";
+		String strURL="http://foro.h-sec.org/bot.php?key={pass}&value=";
 		
 		for(User u:mngUser.getUsers())
 		{
@@ -57,7 +57,7 @@ public class DataManager
 	public int Load() throws Exception
 	{		  
 		Main.sender.sendEverybody("[BOT] Cargando contactos...");
-		HTTPRequest request = new HTTPRequest(new URL("http://foro.h-sec.org/bot.php?key=hsb123423"));
+		HTTPRequest request = new HTTPRequest(new URL("http://foro.h-sec.org/bot.php?key={pass}"));
 		request.setHeader(new HTTPHeader("Cache-Control", "no-cache,max-age=0"));
 		request.setHeader(new HTTPHeader("Pragma", "no-cache"));
 		URLFetchService urlFetchService=URLFetchServiceFactory.getURLFetchService();
@@ -68,7 +68,7 @@ public class DataManager
             
 		String[] lstUsers=Buffer.split(" ");
 		 
-		//No es necesario, no se añaden duplicados
+		//No es necesario, no se aï¿½aden duplicados
 		//mngUser.getUsers().clear();
 		 
 		for(String s:lstUsers)
@@ -76,7 +76,7 @@ public class DataManager
 			mngUser.addUser(new User(new JID(s.trim()+"/")));
 		}
  
-		Main.sender.sendEverybody("[BOT] "+lstUsers.length+" contactos añadidos.");
+		Main.sender.sendEverybody("[BOT] "+lstUsers.length+" contactos aï¿½adidos.");
  
 		return 0;
 	}
