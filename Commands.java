@@ -21,15 +21,23 @@ public class Commands
 		if(msg.startsWith("/online")) return true;
 		if(msg.startsWith("/remove")) return true;
 		if(msg.startsWith("/nick")) return true;
+		if(msg.startsWith("/source")) return true;
+		if(msg.startsWith("/setnick")) return true;
+		if(msg.startsWith("/save")) return true;
+		if(msg.startsWith("/load")) return true;
 		
 		return false;
 	}
 	
-	int run(User UserFrom,String msg)
+	int run(User UserFrom,String msg) throws Exception
 	{
 		if(msg.startsWith("/salute"))
 		{
 			Salute();
+		}
+		if(msg.startsWith("/source"))
+		{
+			ShowSource(UserFrom);
 		}
 		if(msg.startsWith("/invite"))
 		{
@@ -69,12 +77,42 @@ public class Commands
 			}
 		}
 		
+		if(msg.startsWith("/save")) 
+		{
+			if(UserFrom.isMod())
+			{
+				Save();
+			}
+			else
+			{
+				PrintNoAccess(UserFrom);
+			}
+		}
+		
+		if(msg.startsWith("/load")) 
+		{
+			if(UserFrom.isMod())
+			{
+				Load();
+			}
+			else
+			{
+				PrintNoAccess(UserFrom);
+			}
+		}
+		
 		return 0;
 	}
 	
 	int Salute()
 	{
 		sender.sendEverybody("[BOT] Hola, soy un bot :P");
+		return 0;
+	}
+	
+	int ShowSource(User UserTo)
+	{
+		sender.SendTo(UserTo,"[BOT] Código disponible en < https://github.com/hzeroo/HBOT >");
 		return 0;
 	}
 	
@@ -150,6 +188,24 @@ public class Commands
 		String oldNick=user.getNick();
 		user.setNick(nick);
 		sender.sendEverybody("[HBOT] "+oldNick+" es ahora conocido como "+user.getNick());
+		return 0;
+	}
+	
+	int Save() throws Exception
+	{
+		DataManager DM=new DataManager(mngUser);
+		
+		DM.Save();
+		
+		return 0;
+	}
+	
+	int Load() throws Exception
+	{
+		DataManager DM=new DataManager(mngUser);
+		
+		DM.Load();
+		
 		return 0;
 	}
 }

@@ -1,15 +1,24 @@
 package hbot;
 
 import java.util.*;
+
+import javax.jdo.annotations.PrimaryKey;
+
 import com.google.appengine.api.xmpp.JID;
 
 public class UserManager
 {
 	private static ArrayList<User> lstUsers;
+	private int ID=0;
 	
 	public UserManager()
 	{
 		lstUsers=new ArrayList<User>();
+	}
+	
+	public int getID()
+	{
+		return this.ID;
 	}
 	
 	public int addUser(User user)

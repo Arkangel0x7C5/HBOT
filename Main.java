@@ -4,18 +4,16 @@ import java.io.IOException;
 import javax.servlet.http.*;
 import com.google.appengine.api.xmpp.JID;
 import com.google.appengine.api.xmpp.Message;
-import com.google.appengine.api.xmpp.MessageBuilder;
 import com.google.appengine.api.xmpp.XMPPService;
 import com.google.appengine.api.xmpp.XMPPServiceFactory;
-import java.util.*;
 
 @SuppressWarnings("serial")
 public class Main extends HttpServlet
 {  
-	public static final UserManager mngUser=new UserManager();
-	public static final XMPPService xmpp=XMPPServiceFactory.getXMPPService();
-	public static final Sender sender=new Sender(xmpp,mngUser);
-	public static final Commands cmd=new Commands(sender,mngUser);
+	public static UserManager mngUser=new UserManager();
+	public static XMPPService xmpp=XMPPServiceFactory.getXMPPService();
+	public static Sender sender=new Sender(xmpp,mngUser);
+	public static Commands cmd=new Commands(sender,mngUser);
 	
 	public Main()
 	{		
@@ -42,11 +40,17 @@ public class Main extends HttpServlet
 		  String body=msg.getBody();
 		  if(cmd.isCommand(body))
 		  {
-			  cmd.run(UserFrom,body);
+			  try
+			  {
+				cmd.run(UserFrom,body);
+			  } catch (Exception e)
+			  {
+				  return;
+			  }
 		  }
 		  else
 		  {
-			  String response = "["+UserFrom.getNick()+"]"+body; 
+			  String response = "["+UserFrom.getNick()+"] "+body; 
 			  sender.SendEveryBodyFrom(UserFrom,response);
 		  }
 	  }
