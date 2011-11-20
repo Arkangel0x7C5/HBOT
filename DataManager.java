@@ -14,8 +14,8 @@ import com.google.appengine.api.urlfetch.URLFetchServiceFactory;
 import com.google.appengine.api.xmpp.JID;
 
 
-// ¡¡ AQUÍ HAY MUCHO QUE ARREGLAR !!
-//		(pero ahora tengo useño)
+// ï¿½ï¿½ AQUï¿½ HAY MUCHO QUE ARREGLAR !!
+//		(pero ahora tengo useï¿½o)
 
 public class DataManager
 {
@@ -68,7 +68,7 @@ public class DataManager
             
 		String[] lstUsers=Buffer.split(" ");
 		 
-		//No es necesario, no se añaden duplicados
+		//No es necesario, no se aï¿½aden duplicados
 		//mngUser.getUsers().clear();
 		 
 		for(String s:lstUsers)
@@ -76,7 +76,7 @@ public class DataManager
 			mngUser.addUser(new User(new JID(s.trim()+"/")));
 		}
  
-		Main.sender.sendEverybody("[BOT] "+lstUsers.length+" contactos añadidos.");
+		Main.sender.sendEverybody("[BOT] "+lstUsers.length+" contactos aï¿½adidos.");
  
 		return 0;
 	}
