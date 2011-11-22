@@ -12,13 +12,11 @@ public class Commands
 	Sender sender;
 	UserManager mngUser;
 	private static String Mods;
-	private static ArrayList<String> snoozing;
 	private static ArrayList<String> lstCommands;
 	
 	public Commands(Sender sender,UserManager mngUser)
 	{
 		lstCommands = new ArrayList<String>();
-		snoozing = new ArrayList<String>();
 		this.sender=sender;
 		this.mngUser=mngUser;
 		if(lstCommands.isEmpty())
@@ -53,7 +51,7 @@ public class Commands
 	
 	int run(User UserFrom,String msg) throws Exception
 	{
-		String[] args=msg.split(" ",1);
+		String[] args=msg.split(" ");
 		switch(lstCommands.indexOf(args[0]))
 		{
 			case 0: //salute
@@ -261,10 +259,5 @@ public class Commands
 					               "/snooze <on/off> {Activa y Desactiva la recepcion de mensajes}");
 		}
 		return 0;
-	}
-	
-	ArrayList<String> GetSnoozing()
-	{
-		return snoozing;
 	}
 }
