@@ -1,5 +1,7 @@
 package hbot;
 
+
+import java.util.*;
 import java.util.regex.*;
 import com.google.appengine.api.xmpp.JID;
 import com.google.appengine.api.xmpp.Message;
@@ -9,47 +11,50 @@ public class Commands
 {
 	Sender sender;
 	UserManager mngUser;
-	String[] lstCommands={"salute",
-							"invite",
-							"online",
-							"remove",
-							"nick",
-							"source",
-							"setnick",
-							"save",
-							"load"};
+	private static String Mods;
+	private static ArrayList<String> snoozing;
+	private static ArrayList<String> lstCommands;
+	
 	public Commands(Sender sender,UserManager mngUser)
 	{
+		lstCommands = new ArrayList<String>();
+		snoozing = new ArrayList<String>();
 		this.sender=sender;
 		this.mngUser=mngUser;
-	}
-	boolean isCommand(String msg)
-	{		
-		int i;
-		for(i=0;i<lstCommands.length;i++)
+		if(lstCommands.isEmpty())
 		{
-			if(msg.startsWith("/"+lstCommands[i]))
-			{
-				break;
-			}
+			lstCommands.add("/salute");
+			lstCommands.add("/invite");
+			lstCommands.add("/online");
+			lstCommands.add("/remove");
+			lstCommands.add("/nick");
+			lstCommands.add("/source");
+			lstCommands.add("/setnick");
+			lstCommands.add("/save");
+			lstCommands.add("/load");
+			lstCommands.add("/help");
+			lstCommands.add("/snooze");
 		}
-		
-		if(i==lstCommands.length) return false;
-		else return true;
+		Mods = "/invite <e-mail>     {Invita un usuario al grupo}\r\n"+
+					  "/online              {Muestra la lista de usuarios en el grupo}\r\n"+
+					  "/remove <Nick>       {Remueve un usuario del grupo}\r\n"+
+					  "/nick <Nick>         {Cambia el nick actual}\r\n"+
+					  "/source              {Muestra la direccion del sourcecode del bot}\r\n"+
+					  "/setnick <Old-Nick> <New-Nick>     {Cambia el nick de un usuario en especifico por otro}\r\n"+
+					  "/save                {Guarda la lista de usuarios en el grupo}\r\n"+
+					  "/load                {Carga la lista de usuarios del grupo}\r\n";
+	}
+	
+	boolean isCommand(String msg)
+	{
+		String[] command=msg.split(" ");
+	return lstCommands.contains(command[0]);
 	}
 	
 	int run(User UserFrom,String msg) throws Exception
 	{
-		int i;
-		for(i=0;i<lstCommands.length;i++)
-		{
-			if(msg.startsWith("/"+lstCommands[i]))
-			{
-				break;
-			}
-		}
-		
-		switch(i)
+		String[] command=msg.split(" ");
+		switch(lstCommands.indexOf(command[0]))
 		{
 			case 0: //salute
 				Salute();
@@ -103,6 +108,21 @@ public class Commands
 					Load();
 				else
 					PrintNoAccess(UserFrom);
+			case 9: //help
+				Help(UserFrom);
+			break;
+			
+			case 10: //snooze
+				if (command[1].compareTo("on")==0)
+				{	
+					UserFrom.SetSnooze(true);
+				}
+				else if(command[1].compareTo("off")==0)
+				{
+					UserFrom.SetSnooze(false);
+				}
+				else
+					sender.SendTo(UserFrom, "Fuck You! :p");
 			break;
 		}
 		
@@ -195,25 +215,25 @@ public class Commands
 		sender.sendEverybody("[HBOT] "+oldNick+" es ahora conocido como "+user.getNick());
 		return 0;
 	}
-	
+
 	int Save() throws Exception
 	{
 		DataManager DM=new DataManager(mngUser);
-		
+
 		DM.Save();
-		
+
 		return 0;
 	}
-	
+
 	int Load() throws Exception
 	{
 		DataManager DM=new DataManager(mngUser);
-		
+
 		DM.Load();
-		
+
 		return 0;
 	}
-	
+
 	int SetNick(String msg)
 	{
 		String[] args=msg.split(" ");
@@ -229,9 +249,22 @@ public class Commands
 				break;
 			}
 		}
-		
-		
-		
 		return 0;
+	}
+	
+	int Help(User UserFrom)
+	{
+		if(UserFrom.isMod())
+		{
+			sender.SendTo(UserFrom,"\n/salute     {Saluda a la comunidad}\n" +Mods+
+					               "/help       {Muestra la ayuda del Bot}"+
+					               "/snooze <on/off> {Activa y Desactiva la recepcion de mensajes}");
+		}
+		return 0;
+	}
+	
+	ArrayList<String> GetSnoozing()
+	{
+		return snoozing;
 	}
 }

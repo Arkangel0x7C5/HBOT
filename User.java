@@ -6,6 +6,7 @@ public class User
 {
 	private String Nick;
 	private String Addr;
+	private boolean snooze;
 	boolean Moderator;
 	
 	public User(JID jid)
@@ -53,5 +54,15 @@ public class User
 	public boolean isMod()
 	{
 		return Moderator;
+	}
+
+	public void SetSnooze(boolean status)
+	{
+		snooze=status;
+	}
+	
+	public boolean isSnoozing()
+	{
+		return snooze;
 	}
 }
