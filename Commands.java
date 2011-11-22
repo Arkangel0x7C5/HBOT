@@ -53,8 +53,8 @@ public class Commands
 	
 	int run(User UserFrom,String msg) throws Exception
 	{
-		String[] command=msg.split(" ");
-		switch(lstCommands.indexOf(command[0]))
+		String[] args=msg.split(" ",1);
+		switch(lstCommands.indexOf(args[0]))
 		{
 			case 0: //salute
 				Salute();
@@ -62,7 +62,7 @@ public class Commands
 			
 			case 1: //invite
 				if(UserFrom.isMod())
-					Invite(msg.substring(msg.indexOf(' '),msg.length()));
+					Invite(args[1]);
 				else
 					PrintNoAccess(UserFrom);
 			break;
@@ -73,14 +73,14 @@ public class Commands
 			
 			case 3: //remove
 				if(UserFrom.isMod())
-					Remove(msg.substring(msg.indexOf(' '),msg.length()));
+					Remove(args[1]);
 				else
 					PrintNoAccess(UserFrom);
 			break;
 			
 			case 4: //nick
 				if(UserFrom.isMod())
-					ChangeNick(UserFrom,msg.substring(msg.indexOf(' '),msg.length()));
+					ChangeNick(UserFrom,args[1]);
 				else
 					PrintNoAccess(UserFrom);
 			break;
@@ -91,7 +91,7 @@ public class Commands
 			
 			case 6: //setnick
 				if(UserFrom.isMod())
-					SetNick(msg.substring(msg.indexOf(' '),msg.length()));
+					SetNick(args[1]);
 				else
 					PrintNoAccess(UserFrom);
 			break;
@@ -113,11 +113,11 @@ public class Commands
 			break;
 			
 			case 10: //snooze
-				if (command[1].compareTo("on")==0)
+				if (args[1].compareTo("on")==0)
 				{	
 					UserFrom.SetSnooze(true);
 				}
-				else if(command[1].compareTo("off")==0)
+				else if(args[1].compareTo("off")==0)
 				{
 					UserFrom.SetSnooze(false);
 				}
