@@ -11,6 +11,7 @@ import java.util.*;
 
 public class Sender
 {
+
 	UserManager mngUser;
 	XMPPService xmpp;
 	
@@ -25,7 +26,7 @@ public class Sender
 		  for(User user:mngUser.getUsers())
 		  {
 			  JID jid=new JID(user.getAddr());
-				  if(xmpp.getPresence(jid).isAvailable())
+				  if(xmpp.getPresence(jid).isAvailable()&&!user.isSnoozing())
 				  {
 					  Message message = new MessageBuilder()
 			  			.withRecipientJids(jid)
@@ -42,7 +43,7 @@ public class Sender
 	{
 		  for(User user:mngUser.getUsers())
 		  {
-			  if(user.getAddr().compareTo(UserFrom.getAddr())!=0)
+			  if(user.getAddr().compareTo(UserFrom.getAddr())!=0 && !user.isSnoozing())
 			  {
 				  JID jid=new JID(user.getAddr());
 				  if(xmpp.getPresence(jid).isAvailable())
@@ -80,4 +81,5 @@ public class Sender
 		xmpp.sendInvitation(new JID(Addr));
 		return 0;
 	}
+	
 }
