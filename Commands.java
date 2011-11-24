@@ -1,11 +1,8 @@
 package hbot;
 
-
 import java.util.*;
 import java.util.regex.*;
 import com.google.appengine.api.xmpp.JID;
-import com.google.appengine.api.xmpp.Message;
-import com.google.appengine.api.xmpp.MessageBuilder;
 
 public class Commands
 {
@@ -51,8 +48,11 @@ public class Commands
 	
 	int run(User UserFrom,String msg) throws Exception
 	{
-		String[] args=msg.split(" ");
-		switch(lstCommands.indexOf(args[0]))
+		String[] strArgs=msg.split(" ");
+		ArrayList<String> args=new ArrayList<String>(Arrays.asList(strArgs));
+		args.remove(0);
+		
+		switch(lstCommands.indexOf(strArgs[0]))
 		{
 			case 0: //salute
 				Salute();
@@ -60,7 +60,7 @@ public class Commands
 			
 			case 1: //invite
 				if(UserFrom.isMod())
-					Invite(args[1]);
+					Invite(args);
 				else
 					PrintNoAccess(UserFrom);
 			break;
@@ -71,14 +71,14 @@ public class Commands
 			
 			case 3: //remove
 				if(UserFrom.isMod())
-					Remove(args[1]);
+					Remove(args);
 				else
 					PrintNoAccess(UserFrom);
 			break;
 			
 			case 4: //nick
 				if(UserFrom.isMod())
-					ChangeNick(UserFrom,args[1]);
+					ChangeNick(UserFrom,args);
 				else
 					PrintNoAccess(UserFrom);
 			break;
@@ -89,7 +89,7 @@ public class Commands
 			
 			case 6: //setnick
 				if(UserFrom.isMod())
-					SetNick(args[1]);
+					SetNick(args);
 				else
 					PrintNoAccess(UserFrom);
 			break;
@@ -106,16 +106,18 @@ public class Commands
 					Load();
 				else
 					PrintNoAccess(UserFrom);
+			break;
+			
 			case 9: //help
 				Help(UserFrom);
 			break;
 			
 			case 10: //snooze
-				if (args[1].compareTo("on")==0)
+				if (args.get(0).compareTo("on")==0)
 				{	
 					UserFrom.SetSnooze(true);
 				}
-				else if(args[1].compareTo("off")==0)
+				else if(args.get(0).compareTo("off")==0)
 				{
 					UserFrom.SetSnooze(false);
 				}
@@ -163,15 +165,16 @@ public class Commands
 		return 0;
 	}
 	
-	int Invite(String msg)
+	int Invite(ArrayList<String> args)
 	{
-		msg=msg.trim();
+		if(args.size()!=1) return -1;
+		
 		Pattern email = Pattern.compile("^\\S+@\\S+\\.\\S+$");
-		Matcher mt=email.matcher(msg);
+		Matcher mt=email.matcher(args.get(0));
 		if(mt.find())
 		{	
-			sender.Invite(msg);
-			User nUser=new User(new JID(msg+"/"));
+			sender.Invite(args.get(0).trim());
+			User nUser=new User(new JID(args.get(0).trim()+"/"));
 			if(mngUser.addUser(nUser)==0)
 			{
 				sender.sendEverybody("[BOT] "+nUser.getAddr()+" ha sido invitado.");
@@ -184,32 +187,34 @@ public class Commands
 		return 0;
 	}
 	
-	int Remove(String msg)
+	int Remove(ArrayList<String> args)
 	{
-		msg=msg.trim();
+		if(args.size()!=1) return -1;
 		
 		Pattern email = Pattern.compile("^\\S+@\\S+\\.\\S+$");
-		Matcher mt=email.matcher(msg);
+		Matcher mt=email.matcher(args.get(0).trim());
 		if(mt.find())
 		{
-			if(mngUser.removeUser(msg)==0)
+			if(mngUser.removeUser(args.get(0).trim())==0)
 			{
-				sender.sendEverybody("[BOT] "+msg+" eliminado.");
+				sender.sendEverybody("[BOT] "+args.get(0).trim()+" eliminado.");
 			}
 			else
 			{
-				sender.sendEverybody("[BOT] Error al eliminar al usuario "+msg+".");
+				sender.sendEverybody("[BOT] Error al eliminar al usuario "+args.get(0).trim()+".");
 			}
 		}
 		
 		return 0;
 	}
 	
-	int ChangeNick(User user,String nick)
+	int ChangeNick(User user,ArrayList<String> args)
 	{
-		nick=nick.trim().replace(" ","");
+		sender.SendTo(user,args.toString());
+		if(args.size()!=1) return -1;
+		
 		String oldNick=user.getNick();
-		user.setNick(nick);
+		user.setNick(args.get(0).trim());
 		sender.sendEverybody("[HBOT] "+oldNick+" es ahora conocido como "+user.getNick());
 		return 0;
 	}
@@ -232,17 +237,16 @@ public class Commands
 		return 0;
 	}
 
-	int SetNick(String msg)
+	int SetNick(ArrayList<String> args)
 	{
-		String[] args=msg.split(" ");
-		if(args.length<3) return -1;
+		if(args.size()!=2) return -1;
 
 		for(User u:mngUser.getUsers())
 		{
-			if(u.getAddr().compareTo(args[1])==0 && (!u.isMod()))
+			if(u.getAddr().compareTo(args.get(0).trim())==0 && (!u.isMod()))
 			{
 				String oldNick=u.getNick();
-				u.setNick(args[2]);
+				u.setNick(args.get(1).trim());
 				sender.sendEverybody("[BOT] "+oldNick+" es ahora conocido como "+u.getNick());
 				break;
 			}
@@ -252,12 +256,12 @@ public class Commands
 	
 	int Help(User UserFrom)
 	{
-		if(UserFrom.isMod())
-		{
-			sender.SendTo(UserFrom,"\n/salute     {Saluda a la comunidad}\n" +Mods+
-					               "/help       {Muestra la ayuda del Bot}"+
-					               "/snooze <on/off> {Activa y Desactiva la recepcion de mensajes}");
-		}
+		String strHelp="\n/salute     {Saluda a la comunidad}\n";
+		if(UserFrom.isMod()) strHelp+=Mods;
+		strHelp+="/help       {Muestra la ayuda del Bot}\n/snooze <on/off> {Activa y Desactiva la recepcion de mensajes}";
+
+		sender.SendTo(UserFrom,strHelp);
+		
 		return 0;
 	}
 }

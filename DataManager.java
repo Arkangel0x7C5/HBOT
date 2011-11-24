@@ -1,10 +1,8 @@
 package hbot;
 
-import java.net.MalformedURLException;
 import java.net.URL;
 import java.io.BufferedReader;
 import java.io.InputStreamReader;
-import java.io.IOException;
 
 import com.google.appengine.api.urlfetch.HTTPHeader;
 import com.google.appengine.api.urlfetch.HTTPRequest;
@@ -14,8 +12,7 @@ import com.google.appengine.api.urlfetch.URLFetchServiceFactory;
 import com.google.appengine.api.xmpp.JID;
 
 
-// ï¿½ï¿½ AQUï¿½ HAY MUCHO QUE ARREGLAR !!
-//		(pero ahora tengo useï¿½o)
+//  AQUI HAY MUCHO QUE ARREGLAR !!
 
 public class DataManager
 {
@@ -68,7 +65,7 @@ public class DataManager
             
 		String[] lstUsers=Buffer.split(" ");
 		 
-		//No es necesario, no se aï¿½aden duplicados
+		//No es necesario, no se añaden duplicados
 		//mngUser.getUsers().clear();
 		 
 		for(String s:lstUsers)
@@ -76,7 +73,7 @@ public class DataManager
 			mngUser.addUser(new User(new JID(s.trim()+"/")));
 		}
  
-		Main.sender.sendEverybody("[BOT] "+lstUsers.length+" contactos aï¿½adidos.");
+		Main.sender.sendEverybody("[BOT] "+lstUsers.length+" contactos añadidos.");
  
 		return 0;
 	}
