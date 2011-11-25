@@ -14,19 +14,22 @@ public class Main extends HttpServlet
 	public static XMPPService xmpp=XMPPServiceFactory.getXMPPService();
 	public static Sender sender=new Sender(xmpp,mngUser);
 	public static Commands cmd=new Commands(sender,mngUser);
+	DataManager DM = new DataManager(mngUser);
 	
 	public Main() throws Exception
 	{		 
 		mngUser.addUser(new User(new JID("zero@h-sec.org/")));
 		mngUser.addUser(new User(new JID("lordrna@h-sec.org/")));
-		mngUser.addUser(new User(new JID("aperezhrd@gmail.com/")));
 		mngUser.addUser(new User(new JID("arkangelhacket@gmail.com/")));
+		mngUser.addUser(new User(new JID("aperezhrd@gmail.com/")));
+		cmd.Load();
+		cmd.Load();
 	}
 	@Override
 	public void doPost(HttpServletRequest req, HttpServletResponse resp) throws IOException
 	{  
 		Message msg = xmpp.parseMessage(req);
-		User UserFrom=new User(msg.getFromJid());
+		User UserFrom=new User(msg.ge	
 		  
 		//Identificación de usuario
 		boolean InvitedUser=false;
@@ -59,3 +62,4 @@ public class Main extends HttpServlet
 		}
 	}
 }
+//Cambiando a UTF-8

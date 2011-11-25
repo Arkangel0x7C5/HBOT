@@ -18,18 +18,6 @@ public class User
 		}
 		Nick=strJID.substring(0,strJID.indexOf('@'));
 		Addr=strJID.substring(0,strJID.indexOf('/'));
-		
-		if(Addr.compareTo("zero@h-sec.org")==0 ||
-			Addr.compareTo("lordrna@h-sec.org")==0 ||
-			Addr.compareTo("aperezhrd@gmail.com")==0 ||
-			Addr.compareTo("arkangelhacket@gmail.com")==0)
-		{
-			Moderator=true;
-		}
-		else
-		{
-			Moderator=false;
-		}
 	}
 
 	public String getNick()
@@ -52,6 +40,11 @@ public class User
 		Addr = addr;
 	}
 	
+	public void SetMod(boolean status)
+	{
+		Moderator = status;
+	}
+	
 	public boolean isMod()
 	{
 		return Moderator;
@@ -67,3 +60,4 @@ public class User
 		return snooze;
 	}
 }
+//Cambiando a UTF-8

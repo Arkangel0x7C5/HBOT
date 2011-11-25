@@ -56,3 +56,4 @@ public class UserManager
 		return this.lstUsers;
 	}
 }
+//Cambiando a UTF-8
