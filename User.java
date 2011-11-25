@@ -21,6 +21,7 @@ public class User
 		
 		if(Addr.compareTo("zero@h-sec.org")==0 ||
 			Addr.compareTo("lordrna@h-sec.org")==0 ||
+			Addr.compareTo("aperezhrd@gmail.com")==0 ||
 			Addr.compareTo("arkangelhacket@gmail.com")==0)
 		{
 			Moderator=true;

@@ -16,43 +16,46 @@ public class Main extends HttpServlet
 	public static Commands cmd=new Commands(sender,mngUser);
 	
 	public Main() throws Exception
-	{		
+	{		 
 		mngUser.addUser(new User(new JID("zero@h-sec.org/")));
 		mngUser.addUser(new User(new JID("lordrna@h-sec.org/")));
+		mngUser.addUser(new User(new JID("aperezhrd@gmail.com/")));
 		mngUser.addUser(new User(new JID("arkangelhacket@gmail.com/")));
-		//cmd.run(mngUser.getUsers().get(0),"/load");
 	}
-	  @Override
-	  public void doPost(HttpServletRequest req,HttpServletResponse resp) throws IOException
-	  {  
-		  Message msg = xmpp.parseMessage(req);
-		  User UserFrom=new User(msg.getFromJid());
-		  boolean InvitedUser=false;
-		  for(User u:mngUser.getUsers())
-		  {
-			  if(u.getAddr().compareTo(UserFrom.getAddr())==0)
-			  {
-				  UserFrom=u;
-				  InvitedUser=true;
-			  }
-		  }
-		  if(!InvitedUser) return;
+	@Override
+	public void doPost(HttpServletRequest req, HttpServletResponse resp) throws IOException
+	{  
+		Message msg = xmpp.parseMessage(req);
+		User UserFrom=new User(msg.getFromJid());
 		  
-		  String body=msg.getBody();
-		  if(cmd.isCommand(body))
-		  {
-			  try
-			  {
+		//Identificación de usuario
+		boolean InvitedUser=false;
+		for(User u:mngUser.getUsers())
+		{
+			if(u.getAddr().compareTo(UserFrom.getAddr())==0)
+			{
+				UserFrom=u;
+				InvitedUser=true;
+			}
+		}
+		if(!InvitedUser) return;
+		  
+		/* Proceso del mensaje */
+		String body=msg.getBody();
+		if(cmd.isCommand(body))
+		{
+			try
+			{
 				cmd.run(UserFrom,body);
-			  } catch (Exception e)
-			  {
-				  return;
-			  }
-		  }
-		  else
-		  {
-			  String response = "["+UserFrom.getNick()+"] "+body; 
-			  sender.SendEveryBodyFrom(UserFrom,response);
-		  }
-	  }
+			} catch (Exception e)
+			{
+				return;
+			}
+		}
+		else //Mensaje de texto, lo enviamos.
+		{
+			String response = "["+UserFrom.getNick()+"] "+body; 
+			sender.SendEveryBodyFrom(UserFrom,response);
+		}
+	}
 }

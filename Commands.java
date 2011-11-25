@@ -8,7 +8,8 @@ public class Commands
 {
 	Sender sender;
 	UserManager mngUser;
-	private static String Mods;
+	private static String ModCmds;
+	private static String UsrCmds;
 	private static ArrayList<String> lstCommands;
 	
 	public Commands(Sender sender,UserManager mngUser)
@@ -30,20 +31,23 @@ public class Commands
 			lstCommands.add("/help");
 			lstCommands.add("/snooze");
 		}
-		Mods = "/invite <e-mail>     {Invita un usuario al grupo}\r\n"+
-					  "/online              {Muestra la lista de usuarios en el grupo}\r\n"+
-					  "/remove <Nick>       {Remueve un usuario del grupo}\r\n"+
-					  "/nick <Nick>         {Cambia el nick actual}\r\n"+
-					  "/source              {Muestra la direccion del sourcecode del bot}\r\n"+
-					  "/setnick <Old-Nick> <New-Nick>     {Cambia el nick de un usuario en especifico por otro}\r\n"+
-					  "/save                {Guarda la lista de usuarios en el grupo}\r\n"+
-					  "/load                {Carga la lista de usuarios del grupo}\r\n";
+		ModCmds = "/invite <e-mail>     {Invita un usuario al grupo}\r\n"+
+				"/online              {Muestra la lista de usuarios en el grupo}\r\n"+
+				"/remove <Nick>       {Remueve un usuario del grupo}\r\n"+
+				"/nick <Nick>         {Cambia el nick actual}\r\n"+
+				"/setnick <Old-Nick> <New-Nick>     {Cambia el nick de un usuario en especifico por otro}\r\n"+
+				"/save                {Guarda la lista de usuarios en el grupo}\r\n"+
+				"/load                {Carga la lista de usuarios del grupo}\r\n";
+		UsrCmds = "/help       {Muestra la ayuda del Bot}\n"+
+				"\n/salute     {Saluda a la comunidad}\n"+
+				"/source              {Muestra la direccion del sourcecode del bot}\r\n"+
+				"/snooze <on/off> {Activa y Desactiva la recepcion de mensajes}\n";
 	}
 	
 	boolean isCommand(String msg)
 	{
 		String[] command=msg.split(" ");
-	return lstCommands.contains(command[0]);
+		return lstCommands.contains(command[0]);
 	}
 	
 	int run(User UserFrom,String msg) throws Exception
@@ -137,13 +141,13 @@ public class Commands
 	
 	int ShowSource(User UserTo)
 	{
-		sender.SendTo(UserTo,"[BOT] Código disponible en < https://github.com/hzeroo/HBOT >");
+		sender.SendTo(UserTo,"[BOT] Cï¿½digo disponible en < https://github.com/hzeroo/HBOT >");
 		return 0;
 	}
 	
 	int PrintNoAccess(User user)
 	{
-		sender.SendTo(user,"[BOT] No tienes permisos para hacer esta operación.");
+		sender.SendTo(user,"[BOT] No tienes permisos para hacer esta operaciï¿½n.");
 		return 0;
 	}
 	
@@ -256,10 +260,8 @@ public class Commands
 	
 	int Help(User UserFrom)
 	{
-		String strHelp="\n/salute     {Saluda a la comunidad}\n";
-		if(UserFrom.isMod()) strHelp+=Mods;
-		strHelp+="/help       {Muestra la ayuda del Bot}\n/snooze <on/off> {Activa y Desactiva la recepcion de mensajes}";
-
+		String strHelp = UsrCmds;
+		if(UserFrom.isMod()) strHelp+=ModCmds;
 		sender.SendTo(UserFrom,strHelp);
 		
 		return 0;
