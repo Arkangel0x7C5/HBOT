@@ -57,7 +57,7 @@ public class Commands
 			case 0: //salute
 				Salute();
 			break;
-
+			
 			case 1: //invite
 				if(UserFrom.isMod())
 					Invite(args[1]);
