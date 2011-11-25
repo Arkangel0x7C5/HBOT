@@ -18,17 +18,6 @@ public class User
 		}
 		Nick=strJID.substring(0,strJID.indexOf('@'));
 		Addr=strJID.substring(0,strJID.indexOf('/'));
-		
-		if(Addr.compareTo("zero@h-sec.org")==0 ||
-			Addr.compareTo("lordrna@h-sec.org")==0 ||
-			Addr.compareTo("arkangelhacket@gmail.com")==0)
-		{
-			Moderator=true;
-		}
-		else
-		{
-			Moderator=false;
-		}
 	}
 
 	public String getNick()
@@ -49,6 +38,11 @@ public class User
 	public void setAddr(String addr)
 	{
 		Addr = addr;
+	}
+	
+	public void SetMod(boolean status)
+	{
+		Moderator = status;
 	}
 	
 	public boolean isMod()
