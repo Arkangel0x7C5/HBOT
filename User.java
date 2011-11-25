@@ -1,4 +1,4 @@
-package hbot;
+﻿package hbot;
 
 import com.google.appengine.api.xmpp.JID;
 

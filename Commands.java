@@ -30,6 +30,7 @@ public class Commands
 			lstCommands.add("/load");
 			lstCommands.add("/help");
 			lstCommands.add("/snooze");
+			lstCommands.add("/private");
 		}
 		ModCmds = "/invite <e-mail>     {Invita un usuario al grupo}\r\n"+
 				"/online              {Muestra la lista de usuarios en el grupo}\r\n"+
@@ -133,6 +134,9 @@ public class Commands
 					sender.SendTo(UserFrom, "Fuck You! :p");
 				//Save();
 			break;
+			case 11: //Private <email> msg. Manda un mensage a una persona
+				Private(args[1],msg.substring(msg.indexOf(args[1])+args[1].length()),UserFrom);
+			break;
 		}
 
 		return 0;
@@ -155,7 +159,8 @@ public class Commands
 		sender.SendTo(user,"[BOT] No tienes permisos para hacer esta operación.");
 		return 0;
 	}
-
+	
+	@SuppressWarnings("deprecation")
 	int Online(User UserFrom)
 	{
 		String lstUsuarios="";
@@ -167,7 +172,12 @@ public class Commands
 			else
 				lstUsuarios+="[-]";
 
-			lstUsuarios+="["+u.getNick()+"]"+"<"+u.getAddr()+">\n";
+			lstUsuarios+="["+u.getNick()+"]\t";
+			//Si no es administrador, no se muestran los mails
+			if(UserFrom.isMod())lstUsuarios+="<"+u.getAddr()+">\t";
+			
+			if(sender.xmpp.getPresence(new JID(u.getAddr())).isAvailable())lstUsuarios+="conectado";
+			lstUsuarios+="\n";
 		}
 
 		sender.SendTo(UserFrom,"[BOT]\n"+lstUsuarios);
@@ -271,6 +281,11 @@ public class Commands
 		if(UserFrom.isMod()) strHelp+=ModCmds;
 		sender.SendTo(UserFrom,strHelp);
 		
+		return 0;
+	}
+
+	int Private(String nick,String msg,User From)
+	{
 		return 0;
 	}
 }

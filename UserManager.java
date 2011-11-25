@@ -1,6 +1,7 @@
-package hbot;
+﻿package hbot;
 
 import java.util.*;
+
 
 public class UserManager
 {
@@ -49,6 +50,6 @@ public class UserManager
 
 	public List<User> getUsers()
 	{
-		return this.lstUsers;
+		return lstUsers;
 	}
 }
