@@ -1,4 +1,4 @@
-package hbot;
+﻿package hbot;
 
 import java.net.MalformedURLException;
 import java.net.URL;

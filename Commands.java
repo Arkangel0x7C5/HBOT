@@ -1,4 +1,4 @@
-package hbot;
+ï»¿package hbot;
 
 
 import java.util.*;
@@ -139,13 +139,13 @@ public class Commands
 	
 	int ShowSource(User UserTo)
 	{
-		sender.SendTo(UserTo,"[BOT] Código disponible en < https://github.com/hzeroo/HBOT >");
+		sender.SendTo(UserTo,"[BOT] CÃ³digo disponible en < https://github.com/hzeroo/HBOT >");
 		return 0;
 	}
 	
 	int PrintNoAccess(User user)
 	{
-		sender.SendTo(user,"[BOT] No tienes permisos para hacer esta operación.");
+		sender.SendTo(user,"[BOT] No tienes permisos para hacer esta operaciÃ³n.");
 		return 0;
 	}
 	
