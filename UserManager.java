@@ -2,10 +2,9 @@
 
 import java.util.*;
 
-
 public class UserManager
 {
-	private static ArrayList<User> lstUsers;
+	private ArrayList<User> lstUsers;
 	private int ID=0;
 	
 	public UserManager()

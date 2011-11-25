@@ -44,7 +44,8 @@ public class Main extends HttpServlet
 			try
 			{
 				cmd.run(UserFrom,body);
-			} catch (Exception e)
+			}
+			catch (Exception e)
 			{
 				return;
 			}

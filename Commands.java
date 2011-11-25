@@ -131,11 +131,12 @@ public class Commands
 					UserFrom.SetSnooze(false);
 				}
 				else
-					sender.SendTo(UserFrom, "Fuck You! :p");
+					sender.SendTo(UserFrom, "[BOT] Uso: /snooze <on/off>");
 				//Save();
 			break;
+			
 			case 11: //Private <email> msg. Manda un mensage a una persona
-				Private(args[1],msg.substring(msg.indexOf(args[1])+args[1].length()),UserFrom);
+				//TODO
 			break;
 		}
 
@@ -229,6 +230,7 @@ public class Commands
 		return 0;
 	}
 
+	//TODO: Guardar el nick en el DataStore
 	int ChangeNick(User user,ArrayList<String> args)
 	{
 		sender.SendTo(user,args.toString());
@@ -236,7 +238,7 @@ public class Commands
 		
 		String oldNick=user.getNick();
 		user.setNick(args.get(0).trim());
-		sender.sendEverybody("[HBOT] "+oldNick+" es ahora conocido como "+user.getNick());
+		sender.sendEverybody("[BOT] "+oldNick+" es ahora conocido como "+user.getNick());
 		return 0;
 	}
 
@@ -258,6 +260,7 @@ public class Commands
 		return 0;
 	}
 
+	//TODO: guardar el nick en el DataStore
 	int SetNick(ArrayList<String> args)
 	{
 		if(args.size()!=2) return -1;
@@ -286,6 +289,7 @@ public class Commands
 
 	int Private(String nick,String msg,User From)
 	{
+		//TODO
 		return 0;
 	}
 }
