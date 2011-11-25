@@ -102,3 +102,4 @@ public class DataManager
 		
 	}
 }
+//Cambiando a UTF-8

@@ -142,13 +142,13 @@ public class Commands
 
 	int ShowSource(User UserTo)
 	{
-		sender.SendTo(UserTo,"[BOT] Código disponible en < https://github.com/hzeroo/HBOT >");
+		sender.SendTo(UserTo,"[BOT] CÃ³digo disponible en < https://github.com/hzeroo/HBOT >");
 		return 0;
 	}
 
 	int PrintNoAccess(User user)
 	{
-		sender.SendTo(user,"[BOT] No tienes permisos para hacer esta operación.");
+		sender.SendTo(user,"[BOT] No tienes permisos para hacer esta operaciÃ³n.");
 		return 0;
 	}
 
@@ -270,3 +270,4 @@ public class Commands
 		return 0;
 	}
 }
+//Cambiando a UTF-8
