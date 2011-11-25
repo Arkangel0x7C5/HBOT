@@ -32,7 +32,7 @@ public class Commands
 			lstCommands.add("/load");
 			lstCommands.add("/help");
 			lstCommands.add("/snooze");
-			//lstCommands.add("/private");
+			lstCommands.add("/private");
 		}
 		Mods = "/invite <e-mail>     {Invita un usuario al grupo}\r\n"+
 					  "/online              {Muestra la lista de usuarios en el grupo}\r\n"+
@@ -124,7 +124,7 @@ public class Commands
 					sender.SendTo(UserFrom, "Fuck You! :p");
 			break;
 			case 11: //Private <email> msg. Manda un mensage a una persona
-				
+				Private(args[1],msg.substring(msg.indexOf(args[1])+args[1].length()),UserFrom);
 			break;
 		}
 		
@@ -160,6 +160,7 @@ public class Commands
 				lstUsuarios+="[+]";
 			else
 				lstUsuarios+="[-]";
+			
 			lstUsuarios+="["+u.getNick()+"]\t";
 			//Si no es administrador, no se muestran los mails
 			if(UserFrom.isMod())lstUsuarios+="<"+u.getAddr()+">\t";
@@ -267,6 +268,9 @@ public class Commands
 					               "/help       {Muestra la ayuda del Bot}"+
 					               "/snooze <on/off> {Activa y Desactiva la recepcion de mensajes}");
 		}
+		return 0;
+	}
+	int Private(String nick,String msg,User From){
 		return 0;
 	}
 }
