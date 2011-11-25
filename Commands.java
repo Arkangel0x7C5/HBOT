@@ -4,8 +4,8 @@ package hbot;
 import java.util.*;
 import java.util.regex.*;
 import com.google.appengine.api.xmpp.JID;
-import com.google.appengine.api.xmpp.Message;
-import com.google.appengine.api.xmpp.MessageBuilder;
+//import com.google.appengine.api.xmpp.Message;
+//import com.google.appengine.api.xmpp.MessageBuilder;
 
 public class Commands
 {
@@ -32,6 +32,7 @@ public class Commands
 			lstCommands.add("/load");
 			lstCommands.add("/help");
 			lstCommands.add("/snooze");
+			//lstCommands.add("/private");
 		}
 		Mods = "/invite <e-mail>     {Invita un usuario al grupo}\r\n"+
 					  "/online              {Muestra la lista de usuarios en el grupo}\r\n"+
@@ -122,6 +123,9 @@ public class Commands
 				else
 					sender.SendTo(UserFrom, "Fuck You! :p");
 			break;
+			case 11: //Private <email> msg. Manda un mensage a una persona
+				
+			break;
 		}
 		
 		return 0;
@@ -145,6 +149,7 @@ public class Commands
 		return 0;
 	}
 	
+	@SuppressWarnings("deprecation")
 	int Online(User UserFrom)
 	{
 		String lstUsuarios="";
@@ -155,8 +160,12 @@ public class Commands
 				lstUsuarios+="[+]";
 			else
 				lstUsuarios+="[-]";
+			lstUsuarios+="["+u.getNick()+"]\t";
+			//Si no es administrador, no se muestran los mails
+			if(UserFrom.isMod())lstUsuarios+="<"+u.getAddr()+">\t";
 			
-			lstUsuarios+="["+u.getNick()+"]"+"<"+u.getAddr()+">\n";
+			if(sender.xmpp.getPresence(new JID(u.getAddr())).isAvailable())lstUsuarios+="conectado";
+			lstUsuarios+="\n";
 		}
 
 		sender.SendTo(UserFrom,"[BOT]\n"+lstUsuarios);

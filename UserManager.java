@@ -2,9 +2,9 @@ package hbot;
 
 import java.util.*;
 
-import javax.jdo.annotations.PrimaryKey;
+//import javax.jdo.annotations.PrimaryKey;
 
-import com.google.appengine.api.xmpp.JID;
+//import com.google.appengine.api.xmpp.JID;
 
 public class UserManager
 {

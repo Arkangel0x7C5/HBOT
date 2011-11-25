@@ -1,19 +1,19 @@
 package hbot;
 
-import java.io.IOException;
-import javax.servlet.http.*;
+//import java.io.IOException;
+//import javax.servlet.http.*;
 import com.google.appengine.api.xmpp.JID;
 import com.google.appengine.api.xmpp.Message;
 import com.google.appengine.api.xmpp.MessageBuilder;
 import com.google.appengine.api.xmpp.XMPPService;
-import com.google.appengine.api.xmpp.XMPPServiceFactory;
-import java.util.*;
+//import com.google.appengine.api.xmpp.XMPPServiceFactory;
+//import java.util.*;
 
 public class Sender
 {
 
 	UserManager mngUser;
-	XMPPService xmpp;
+	public XMPPService xmpp;
 	
 	Sender(XMPPService xmpp,UserManager mngUser)
 	{
@@ -21,6 +21,7 @@ public class Sender
 		this.xmpp=xmpp;
 	}
 	
+	@SuppressWarnings("deprecation")
 	int sendEverybody(String msg)
 	{
 		  for(User user:mngUser.getUsers())

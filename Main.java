@@ -18,9 +18,9 @@ public class Main extends HttpServlet
 	public Main() throws Exception
 	{		
 		mngUser.addUser(new User(new JID("zero@h-sec.org/")));
-		mngUser.addUser(new User(new JID("lordrna@h-sec.org/")));
+		//mngUser.addUser(new User(new JID("lordrna@h-sec.org/")));
 		mngUser.addUser(new User(new JID("arkangelhacket@gmail.com/")));
-		cmd.run(mngUser.getUsers().get(0),"/load");
+		//cmd.run(mngUser.getUsers().get(0),"/load");
 	}
 	  @Override
 	  public void doPost(HttpServletRequest req,HttpServletResponse resp) throws IOException
