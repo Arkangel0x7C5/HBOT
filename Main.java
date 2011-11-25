@@ -2,7 +2,6 @@ package hbot;
 
 import java.io.IOException;
 import javax.servlet.http.*;
-import com.google.appengine.api.xmpp.JID;
 import com.google.appengine.api.xmpp.Message;
 import com.google.appengine.api.xmpp.XMPPService;
 import com.google.appengine.api.xmpp.XMPPServiceFactory;
@@ -18,18 +17,13 @@ public class Main extends HttpServlet
 	
 	public Main() throws Exception
 	{		 
-		mngUser.addUser(new User(new JID("zero@h-sec.org/")));
-		mngUser.addUser(new User(new JID("lordrna@h-sec.org/")));
-		mngUser.addUser(new User(new JID("arkangelhacket@gmail.com/")));
-		mngUser.addUser(new User(new JID("aperezhrd@gmail.com/")));
-		cmd.Load();
 		cmd.Load();
 	}
 	@Override
 	public void doPost(HttpServletRequest req, HttpServletResponse resp) throws IOException
 	{  
 		Message msg = xmpp.parseMessage(req);
-		User UserFrom=new User(msg.ge	
+		User UserFrom=new User(msg.getFromJid());
 		  
 		//Identificación de usuario
 		boolean InvitedUser=false;
@@ -62,4 +56,3 @@ public class Main extends HttpServlet
 		}
 	}
 }
-//Cambiando a UTF-8

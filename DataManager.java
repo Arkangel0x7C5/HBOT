@@ -5,8 +5,6 @@ import com.google.appengine.api.datastore.DatastoreServiceFactory;
 import com.google.appengine.api.datastore.Entity;
 import com.google.appengine.api.datastore.PreparedQuery;
 import com.google.appengine.api.datastore.Query;
-import com.google.appengine.api.datastore.KeyFactory;
-import com.google.appengine.api.datastore.Key;
 
 import com.google.appengine.api.xmpp.JID;
 
@@ -57,6 +55,16 @@ public class DataManager
 		DatastoreService datastore = DatastoreServiceFactory.getDatastoreService();
 		Query q = new Query("users");
 		PreparedQuery pq = datastore.prepare(q);
+		
+		 if(pq.countEntities()==0)
+		 {
+			 Entity FirstUser=new Entity("users");
+			 FirstUser.setProperty("Nick","Zero");
+			 FirstUser.setProperty("email","zero@h-sec.org");
+			 FirstUser.setProperty("Snooze","false");
+			 FirstUser.setProperty("Mod","true");
+			 datastore.put(FirstUser);
+		 }
 				
 		for(Entity result: pq.asIterable())
 		{
@@ -104,4 +112,3 @@ public class DataManager
 		
 	}
 }
-//Cambiando a UTF-8

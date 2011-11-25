@@ -2,10 +2,6 @@ package hbot;
 
 import java.util.*;
 
-import javax.jdo.annotations.PrimaryKey;
-
-import com.google.appengine.api.xmpp.JID;
-
 public class UserManager
 {
 	private static ArrayList<User> lstUsers;
@@ -56,4 +52,3 @@ public class UserManager
 		return this.lstUsers;
 	}
 }
-//Cambiando a UTF-8

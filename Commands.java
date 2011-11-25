@@ -274,4 +274,3 @@ public class Commands
 		return 0;
 	}
 }
-//Cambiando a UTF-8

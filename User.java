@@ -60,4 +60,3 @@ public class User
 		return snooze;
 	}
 }
-//Cambiando a UTF-8
