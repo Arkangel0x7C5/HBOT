@@ -55,4 +55,11 @@ public class UserManager
 	{
 		return this.lstUsers;
 	}
+	public User getUser(String NickOrEMail)throws Exception{
+		//int IsNick = ;
+		for(int i = 0;i<lstUsers.size();i++){
+			if(lstUsers.get(i).getNick().compareTo(NickOrEMail)==0)return lstUsers.get(i);
+		}
+		throw new Exception();
+	}
 }
