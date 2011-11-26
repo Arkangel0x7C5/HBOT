@@ -1,4 +1,4 @@
-﻿package hbot;
+package hbot;
 
 import java.util.*;
 import java.util.regex.*;
@@ -11,7 +11,7 @@ public class Commands
 	private static String ModCmds;
 	private static String UsrCmds;
 	private static ArrayList<String> lstCommands;
-
+	
 	public Commands(Sender sender,UserManager mngUser)
 	{
 		lstCommands = new ArrayList<String>();
@@ -30,7 +30,6 @@ public class Commands
 			lstCommands.add("/load");
 			lstCommands.add("/help");
 			lstCommands.add("/snooze");
-			lstCommands.add("/private");
 		}
 		ModCmds = "/invite <e-mail>     {Invita un usuario al grupo}\r\n"+
 				"/online              {Muestra la lista de usuarios en el grupo}\r\n"+
@@ -44,13 +43,13 @@ public class Commands
 				"/source              {Muestra la direccion del sourcecode del bot}\r\n"+
 				"/snooze <on/off> {Activa y Desactiva la recepcion de mensajes}\n";
 	}
-
+	
 	boolean isCommand(String msg)
 	{
 		String[] command=msg.split(" ");
 		return lstCommands.contains(command[0]);
 	}
-
+	
 	int run(User UserFrom,String msg) throws Exception
 	{
 		String[] strArgs=msg.split(" ");
@@ -68,48 +67,44 @@ public class Commands
 					Invite(args);
 				else
 					PrintNoAccess(UserFrom);
-				Save();
 			break;
-
+			
 			case 2: //online
 				Online(UserFrom);
 			break;
-
+			
 			case 3: //remove
 				if(UserFrom.isMod())
 					Remove(args);
 				else
 					PrintNoAccess(UserFrom);
-				Save();
 			break;
-
+			
 			case 4: //nick
 				if(UserFrom.isMod())
 					ChangeNick(UserFrom,args);
 				else
 					PrintNoAccess(UserFrom);
-				Save();
 			break;
-
+			
 			case 5: //source
 				ShowSource(UserFrom);
 			break;
-
+			
 			case 6: //setnick
 				if(UserFrom.isMod())
 					SetNick(args);
 				else
 					PrintNoAccess(UserFrom);
-				Save();
 			break;
-
+			
 			case 7: //save
 				if(UserFrom.isMod())
 					Save();
 				else
 					PrintNoAccess(UserFrom);
 			break;
-
+			
 			case 8: //load
 				if(UserFrom.isMod())
 					Load();
@@ -120,7 +115,7 @@ public class Commands
 			case 9: //help
 				Help(UserFrom);
 			break;
-
+			
 			case 10: //snooze
 				if (args.get(0).compareTo("on")==0)
 				{	
@@ -131,60 +126,49 @@ public class Commands
 					UserFrom.SetSnooze(false);
 				}
 				else
-					sender.SendTo(UserFrom, "[BOT] Uso: /snooze <on/off>");
-				//Save();
-			break;
-			
-			case 11: //Private <email> msg. Manda un mensage a una persona
-				//TODO
+					sender.SendTo(UserFrom, "Fuck You! :p");
 			break;
 		}
-
+		
 		return 0;
 	}
-
+	
 	int Salute()
 	{
 		sender.sendEverybody("[BOT] Hola, soy un bot :P");
 		return 0;
 	}
-
+	
 	int ShowSource(User UserTo)
 	{
 		sender.SendTo(UserTo,"[BOT] Código disponible en < https://github.com/hzeroo/HBOT >");
 		return 0;
 	}
-
+	
 	int PrintNoAccess(User user)
 	{
 		sender.SendTo(user,"[BOT] No tienes permisos para hacer esta operación.");
 		return 0;
 	}
 	
-	@SuppressWarnings("deprecation")
 	int Online(User UserFrom)
 	{
 		String lstUsuarios="";
-
+		
 		for(User u:mngUser.getUsers())
 		{
 			if(u.isMod())
 				lstUsuarios+="[+]";
 			else
 				lstUsuarios+="[-]";
-
-			lstUsuarios+="["+u.getNick()+"]\t";
-			//Si no es administrador, no se muestran los mails
-			if(UserFrom.isMod())lstUsuarios+="<"+u.getAddr()+">\t";
 			
-			if(sender.xmpp.getPresence(new JID(u.getAddr())).isAvailable())lstUsuarios+="conectado";
-			lstUsuarios+="\n";
+			lstUsuarios+="["+u.getNick()+"]"+"<"+u.getAddr()+">\n";
 		}
 
 		sender.SendTo(UserFrom,"[BOT]\n"+lstUsuarios);
 		return 0;
 	}
-
+	
 	int Invite(ArrayList<String> args)
 	{
 		if(args.size()!=1) return -1;
@@ -206,19 +190,17 @@ public class Commands
 		}
 		return 0;
 	}
-
+	
 	int Remove(ArrayList<String> args)
 	{
 		if(args.size()!=1) return -1;
-
+		
 		Pattern email = Pattern.compile("^\\S+@\\S+\\.\\S+$");
 		Matcher mt=email.matcher(args.get(0).trim());
 		if(mt.find())
 		{
 			if(mngUser.removeUser(args.get(0).trim())==0)
 			{
-				DataManager DM = new DataManager(mngUser);
-				DM.remove(args.get(0).trim());
 				sender.sendEverybody("[BOT] "+args.get(0).trim()+" eliminado.");
 			}
 			else
@@ -226,11 +208,10 @@ public class Commands
 				sender.sendEverybody("[BOT] Error al eliminar al usuario "+args.get(0).trim()+".");
 			}
 		}
-
+		
 		return 0;
 	}
-
-	//TODO: Guardar el nick en el DataStore
+	
 	int ChangeNick(User user,ArrayList<String> args)
 	{
 		sender.SendTo(user,args.toString());
@@ -238,7 +219,7 @@ public class Commands
 		
 		String oldNick=user.getNick();
 		user.setNick(args.get(0).trim());
-		sender.sendEverybody("[BOT] "+oldNick+" es ahora conocido como "+user.getNick());
+		sender.sendEverybody("[HBOT] "+oldNick+" es ahora conocido como "+user.getNick());
 		return 0;
 	}
 
@@ -260,7 +241,6 @@ public class Commands
 		return 0;
 	}
 
-	//TODO: guardar el nick en el DataStore
 	int SetNick(ArrayList<String> args)
 	{
 		if(args.size()!=2) return -1;
@@ -277,19 +257,13 @@ public class Commands
 		}
 		return 0;
 	}
-
+	
 	int Help(User UserFrom)
 	{
 		String strHelp = UsrCmds;
 		if(UserFrom.isMod()) strHelp+=ModCmds;
 		sender.SendTo(UserFrom,strHelp);
 		
-		return 0;
-	}
-
-	int Private(String nick,String msg,User From)
-	{
-		//TODO
 		return 0;
 	}
 }

@@ -1,10 +1,14 @@
-﻿package hbot;
+package hbot;
 
 import java.util.*;
 
+import javax.jdo.annotations.PrimaryKey;
+
+import com.google.appengine.api.xmpp.JID;
+
 public class UserManager
 {
-	private ArrayList<User> lstUsers;
+	private static ArrayList<User> lstUsers;
 	private int ID=0;
 	
 	public UserManager()
@@ -49,6 +53,6 @@ public class UserManager
 
 	public List<User> getUsers()
 	{
-		return lstUsers;
+		return this.lstUsers;
 	}
 }
