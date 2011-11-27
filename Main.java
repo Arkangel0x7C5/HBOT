@@ -1,8 +1,7 @@
-package hbot;
+﻿package hbot;
 
 import java.io.IOException;
 import javax.servlet.http.*;
-import com.google.appengine.api.xmpp.JID;
 import com.google.appengine.api.xmpp.Message;
 import com.google.appengine.api.xmpp.XMPPService;
 import com.google.appengine.api.xmpp.XMPPServiceFactory;
@@ -14,13 +13,11 @@ public class Main extends HttpServlet
 	public static XMPPService xmpp=XMPPServiceFactory.getXMPPService();
 	public static Sender sender=new Sender(xmpp,mngUser);
 	public static Commands cmd=new Commands(sender,mngUser);
+	DataManager DM = new DataManager(mngUser);
 	
 	public Main() throws Exception
 	{		 
-		mngUser.addUser(new User(new JID("zero@h-sec.org/")));
-		mngUser.addUser(new User(new JID("lordrna@h-sec.org/")));
-		mngUser.addUser(new User(new JID("aperezhrd@gmail.com/")));
-		mngUser.addUser(new User(new JID("arkangelhacket@gmail.com/")));
+		cmd.Load();
 	}
 	@Override
 	public void doPost(HttpServletRequest req, HttpServletResponse resp) throws IOException
@@ -47,7 +44,8 @@ public class Main extends HttpServlet
 			try
 			{
 				cmd.run(UserFrom,body);
-			} catch (Exception e)
+			}
+			catch (Exception e)
 			{
 				return;
 			}
