@@ -71,6 +71,22 @@ public class Sender
 		  
 		return 0;
 	}
+	int SendTo(User UserFrom,String NickTo,String msg){
+		for(User user:mngUser.getUsers()){
+			
+			  if(user.getNick().compareTo(NickTo)==0){
+				  JID jid=new JID(user.getAddr());
+					  Message message = new MessageBuilder()
+			  			.withRecipientJids(jid)
+			  			.withBody(msg)
+			  			.build();
+			  
+					  xmpp.sendMessage(message);
+			  }
+		  }
+		
+		return 0;
+	}
 	
 	int Invite(String Addr)
 	{
