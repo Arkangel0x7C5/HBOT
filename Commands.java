@@ -30,6 +30,7 @@ public class Commands
 			lstCommands.add("/load");
 			lstCommands.add("/help");
 			lstCommands.add("/snooze");
+			lstCommands.add("/private");
 		}
 		ModCmds = "/invite <e-mail>     {Invita un usuario al grupo}\r\n"+
 				"/online              {Muestra la lista de usuarios en el grupo}\r\n"+
@@ -41,7 +42,8 @@ public class Commands
 		UsrCmds = "/help       {Muestra la ayuda del Bot}\n"+
 				"\n/salute     {Saluda a la comunidad}\n"+
 				"/source              {Muestra la direccion del sourcecode del bot}\r\n"+
-				"/snooze <on/off> {Activa y Desactiva la recepcion de mensajes}\n";
+				"/snooze <on/off> {Activa y Desactiva la recepcion de mensajes}\n"+
+				"/private <NickTo> <mensage> {Manda un mensage al usuario indicado}\n";
 	}
 	
 	boolean isCommand(String msg)
@@ -127,6 +129,16 @@ public class Commands
 				}
 				else
 					sender.SendTo(UserFrom, "Fuck You! :p");
+			break;
+			case 11: //Private nick msg. Manda un mensage a una persona
+				
+				Private(args.get(0),
+						msg.substring(msg
+								.indexOf(args.get(0))+args.get(0)
+								.length()+1)
+						,UserFrom
+						);
+			
 			break;
 		}
 		
@@ -264,6 +276,11 @@ public class Commands
 		if(UserFrom.isMod()) strHelp+=ModCmds;
 		sender.SendTo(UserFrom,strHelp);
 		
+		return 0;
+	}
+	int Private(String nick,String MsgSend,User From){
+		String Msg = "Mensage privado de "+From.getNick()+":\n\n"+MsgSend;
+		sender.SendTo(From, nick, Msg);
 		return 0;
 	}
 }
